@@ -1,0 +1,12 @@
+import {Router} from 'express';
+import {body} from 'express-validator';
+import {requireAuth,requireRoles} from '../middleware/auth.js';
+import {validate} from '../middleware/validation.js';
+import {asyncHandler} from '../utils/asyncHandler.js';
+import * as c from '../controllers/ingredientController.js';
+const r=Router(); r.use(requireAuth);
+r.get('/',asyncHandler(c.list));
+r.post('/',requireRoles('MASTER_ADMIN','ADMIN','STAFF'),[body('name').isString().trim().isLength({min:2,max:120}),body('baseUnit').isIn(['g','kg','ml','l','pcs'])],validate,asyncHandler(c.create));
+r.post('/receive',requireRoles('MASTER_ADMIN','ADMIN','STAFF'),[body('ingredient').isMongoId(),body('batchNo').isString().trim().notEmpty(),body('quantity').isFloat({gt:0}),body('unit').isIn(['g','kg','ml','l','pcs'])],validate,asyncHandler(c.receive));
+r.post('/wastage',requireRoles('MASTER_ADMIN','ADMIN','STAFF'),[body('ingredient').isMongoId(),body('quantity').isFloat({gt:0}),body('unit').isIn(['g','kg','ml','l','pcs']),body('reason').isIn(['SPOILED','EXPIRED','SPILLAGE','OVERCOOKED','STAFF_MEAL','SAMPLE','DAMAGE','OTHER'])],validate,asyncHandler(c.wastage));
+export default r;

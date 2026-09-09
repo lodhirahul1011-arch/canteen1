@@ -19,6 +19,10 @@ import paymentRoutes from './routes/paymentRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import invoiceRoutes from './routes/invoiceRoutes.js';
+import recipeRoutes from './routes/recipeRoutes.js';
+import ingredientRoutes from './routes/ingredientRoutes.js';
+import productionRoutes from './routes/productionRoutes.js';
+import foodCostRoutes from './routes/foodCostRoutes.js';
 import { notFound, errorHandler } from './middleware/errorHandler.js';
 
 const app = express();
@@ -55,6 +59,10 @@ app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/v1/reports', reportRoutes);
 app.use('/api/v1/notifications', notificationRoutes);
 app.use('/api/v1/invoices', invoiceRoutes);
+app.use('/api/v1/recipes', recipeRoutes);
+app.use('/api/v1/ingredients', ingredientRoutes);
+app.use('/api/v1/production', productionRoutes);
+app.use('/api/v1/food-cost', foodCostRoutes);
 
 app.get('/api/v1', (req, res) => {
   res.json({

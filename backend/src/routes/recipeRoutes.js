@@ -1,0 +1,11 @@
+import {Router} from 'express';
+import {body,param} from 'express-validator';
+import {requireAuth,requireRoles} from '../middleware/auth.js';
+import {validate} from '../middleware/validation.js';
+import {asyncHandler} from '../utils/asyncHandler.js';
+import * as c from '../controllers/recipeController.js';
+const r=Router(); r.use(requireAuth);
+r.get('/',asyncHandler(c.list)); r.get('/:id',[param('id').isMongoId(),validate],asyncHandler(c.getOne));
+r.post('/',requireRoles('MASTER_ADMIN','ADMIN','STAFF'),[body('food').isMongoId(),body('ingredients').isArray({min:1})],validate,asyncHandler(c.create));
+r.delete('/:id',[param('id').isMongoId(),validate],requireRoles('MASTER_ADMIN','ADMIN'),asyncHandler(c.remove));
+export default r;

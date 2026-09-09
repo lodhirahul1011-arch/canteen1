@@ -25,7 +25,8 @@ export type PageKey =
   | 'purchases'
   | 'billing'
   | 'reports'
-  | 'members';
+  | 'members'
+  | 'recipes';
 
 interface SidebarProps {
   current: PageKey;
@@ -37,6 +38,7 @@ const NAV_ITEMS: { key: PageKey; label: string; icon: LucideIcon }[] = [
   { key: 'menu', label: 'Menu Items', icon: UtensilsCrossed },
   { key: 'orders', label: 'Orders', icon: ShoppingCart },
   { key: 'inventory', label: 'Inventory', icon: Package },
+  { key: 'recipes', label: 'Recipes & Ingredients', icon: ChefHat },
   { key: 'purchases', label: 'Purchases', icon: Truck },
   { key: 'billing', label: 'Billing', icon: Receipt },
   { key: 'reports', label: 'Reports', icon: BarChart3 },

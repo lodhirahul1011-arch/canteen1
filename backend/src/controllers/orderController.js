@@ -6,7 +6,9 @@ import { StockLedger } from '../models/StockLedger.js';
 import { Notification } from '../models/Notification.js';
 import { User } from '../models/User.js';
 import { Invoice } from '../models/Invoice.js';
+import { Recipe } from '../models/Recipe.js';
 import { ApiError } from '../utils/apiError.js';
+import { consumeRecipeForOrder, reverseOrderRecipe } from '../utils/recipeConsumption.js';
 
 const STAFF_ROLES = ['MASTER_ADMIN','ADMIN','STAFF'];
 
@@ -59,6 +61,15 @@ export async function create(req,res) {
       const orderNo=`ORD-${Date.now()}-${Math.floor(Math.random()*1000)}`;
       [order]=await Order.create([{orderNo,member:memberId,items:normalized,subtotal,tax:taxValue,discount:discountValue,total,notes,createdBy:req.user._id}],{session});
       for (const item of normalized) {
+        try {
+          const usedRecipe = await consumeRecipeForOrder({
+            food:item.food, orderId:order._id, orderNo:order.orderNo,
+            quantity:item.quantity, userId:req.user._id, session
+          });
+          if (usedRecipe) continue;
+        } catch (e) {
+          throw new ApiError(409,e.message);
+        }
         const inv=await Inventory.findOneAndUpdate(
           {food:item.food, quantity:{$gte:item.quantity}},
           {$inc:{quantity:-item.quantity}, $set:{updatedAtStock:new Date(),lastUpdatedBy:req.user._id}},
@@ -96,7 +107,10 @@ export async function updateStatus(req,res) {
       if(!order) throw new ApiError(404,'Order not found');
       if(!transitions[order.status].includes(status)) throw new ApiError(409,`Invalid status transition: ${order.status} → ${status}`);
       if(status==='CANCELLED'){
+        await reverseOrderRecipe({orderId:order._id,orderNo:order.orderNo,userId:req.user._id,session});
         for(const item of order.items){
+          const hadRecipe=await Recipe.findOne({food:item.food,active:true}).session(session).lean();
+          if(hadRecipe) continue;
           const inv=await Inventory.findOneAndUpdate({food:item.food},{$inc:{quantity:item.quantity},$set:{updatedAtStock:new Date(),lastUpdatedBy:req.user._id}},{new:true,session});
           if(!inv) throw new ApiError(409,`Inventory record missing for ${item.name}`);
           await StockLedger.create([{food:item.food,type:'RETURN',quantity:item.quantity,balanceAfter:inv.quantity,referenceType:'ORDER',referenceId:order._id,note:`Cancelled ${order.orderNo}`,createdBy:req.user._id}],{session});

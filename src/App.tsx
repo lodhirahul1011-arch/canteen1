@@ -8,6 +8,7 @@ import PurchasesPage from '@/pages/PurchasesPage';
 import BillingPage from '@/pages/BillingPage';
 import ReportsPage from '@/pages/ReportsPage';
 import MembersPage from '@/pages/MembersPage';
+import RecipesPage from '@/pages/RecipesPage';
 
 function App() {
   const [page, setPage] = useState<PageKey>('dashboard');
@@ -25,6 +26,7 @@ function App() {
           {page === 'billing' && <BillingPage />}
           {page === 'reports' && <ReportsPage />}
           {page === 'members' && <MembersPage />}
+          {page === 'recipes' && <RecipesPage />}
         </div>
       </main>
     </div>
