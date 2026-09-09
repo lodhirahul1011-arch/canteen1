@@ -48,8 +48,11 @@ export default function Login() {
         <button className="primary" disabled={busy}>{busy ? 'Signing in...' : 'Sign in'}</button>
 
         <div className="demo">
-          Demo users:<br />
-          Master / Admin / Staff / Member credentials are in README.
+          <strong>Demo credentials</strong>
+          <div>Master: master@canteen.local / Master@12345</div>
+          <div>Admin: admin@canteen.local / Admin@12345</div>
+          <div>Staff: staff@canteen.local / Staff@12345</div>
+          <div>Member: member@canteen.local / Member@12345</div>
         </div>
       </form>
     </div>

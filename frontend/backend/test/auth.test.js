@@ -23,6 +23,13 @@ test('GET /health returns healthy', async () => {
   assert.equal(res.body.success, true);
 });
 
+test('GET / returns API information', async () => {
+  const res = await request(app).get('/');
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.body.service, 'canteen-erp-api');
+  assert.equal(res.body.api, '/api/v1');
+});
+
 test('POST /api/v1/auth/register creates a member', async () => {
   const res = await request(app).post('/api/v1/auth/register').send({
     name: 'Test Member',

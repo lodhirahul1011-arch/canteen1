@@ -40,6 +40,16 @@ app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: false, limit: '1mb' }));
 app.use(cookieParser());
 
+app.get('/', (req, res) => {
+  res.json({
+    success: true,
+    service: 'canteen-erp-api',
+    message: 'Canteen ERP API is running',
+    health: '/health',
+    api: '/api/v1'
+  });
+});
+
 app.use(systemRoutes);
 app.use('/api/v1', apiLimiter);
 app.use('/api/v1/auth', authRoutes);

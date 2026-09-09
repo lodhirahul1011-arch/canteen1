@@ -6,7 +6,7 @@ const empty = { name: '', description: '', image: '', status: 'ACTIVE' };
 export default function CategoryManagement() {
   const [items,setItems]=useState([]), [form,setForm]=useState(empty), [editing,setEditing]=useState(null), [search,setSearch]=useState(''), [loading,setLoading]=useState(true), [saving,setSaving]=useState(false), [error,setError]=useState('');
   async function load(){setLoading(true);try{const r=await api.get('/categories',{params:{q:search}});setItems(r.data.data.categories);setError('')}catch(e){setError(e.response?.data?.message||'Unable to load categories')}finally{setLoading(false)}}
-  useEffect(()=>{load()},[search]);
+  useEffect(()=>{load();},[search]);
   function edit(x){setEditing(x._id);setForm({name:x.name,description:x.description||'',image:x.image||'',status:x.status});window.scrollTo({top:0,behavior:'smooth'})}
   function reset(){setEditing(null);setForm(empty)}
   async function submit(e){e.preventDefault();setSaving(true);try{if(editing)await api.put(`/categories/${editing}`,form);else await api.post('/categories',form);reset();await load()}catch(e){setError(e.response?.data?.message||'Unable to save category')}finally{setSaving(false)}}

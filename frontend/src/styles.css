@@ -28,6 +28,9 @@ nav { display: grid; gap: 8px; }
 .main { margin-left: 250px; width: calc(100% - 250px); }
 .topbar { height: 72px; background: white; border-bottom: 1px solid #e7ebf2; display: flex; align-items: center; justify-content: flex-end; padding: 0 32px; }
 .topbar span { display: block; color: #7c879c; font-size: 13px; }
+.user-session { display: flex; align-items: center; gap: 16px; }
+.topbar-logout { border: 1px solid #d6dce7; background: white; color: #344054; padding: 9px 14px; border-radius: 9px; font-weight: 700; }
+.topbar-logout:hover { border-color: #1d6ff2; color: #1d6ff2; }
 .content { padding: 32px; max-width: 1400px; margin: auto; }
 
 .page-heading { display: flex; justify-content: space-between; margin-bottom: 24px; }

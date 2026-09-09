@@ -60,9 +60,12 @@ export default function Layout({ children }) {
 
       <main className="main">
         <header className="topbar">
-          <div>
-            <strong>{user?.role?.replace('_', ' ')}</strong>
-            <span>{user?.email}</span>
+          <div className="user-session">
+            <div>
+              <strong>{user?.role?.replace('_', ' ')}</strong>
+              <span>{user?.email}</span>
+            </div>
+            <button className="topbar-logout" type="button" onClick={logout}>Logout</button>
           </div>
         </header>
         <section className="content">{children}</section>
