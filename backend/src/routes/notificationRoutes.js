@@ -1,0 +1,11 @@
+import { Router } from 'express';
+import { param } from 'express-validator';
+import { requireAuth } from '../middleware/auth.js';
+import { validate } from '../middleware/validation.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import * as c from '../controllers/notificationController.js';
+const r=Router(); r.use(requireAuth);
+r.get('/',asyncHandler(c.list));
+r.patch('/:id/read',[param('id').isMongoId()],validate,asyncHandler(c.markRead));
+r.patch('/read-all',asyncHandler(c.markAllRead));
+export default r;

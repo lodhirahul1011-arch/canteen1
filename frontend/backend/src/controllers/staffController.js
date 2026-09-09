@@ -1,0 +1,6 @@
+import { Staff } from '../models/Staff.js'; import { ApiError } from '../utils/apiError.js';
+export async function list(req,res){const filter={};if(req.query.q)filter.$or=[{name:{$regex:req.query.q,$options:'i'}},{employeeId:{$regex:req.query.q,$options:'i'}},{department:{$regex:req.query.q,$options:'i'}}];if(req.query.status)filter.status=req.query.status;const staff=await Staff.find(filter).sort({createdAt:-1}).lean();res.json({success:true,data:{staff}})}
+export async function getOne(req,res){const x=await Staff.findById(req.params.id);if(!x)throw new ApiError(404,'Staff member not found');res.json({success:true,data:{staff:x}})}
+export async function create(req,res){const x=await Staff.create(req.body);res.status(201).json({success:true,message:'Staff member created',data:{staff:x}})}
+export async function update(req,res){const x=await Staff.findByIdAndUpdate(req.params.id,req.body,{new:true,runValidators:true});if(!x)throw new ApiError(404,'Staff member not found');res.json({success:true,message:'Staff member updated',data:{staff:x}})}
+export async function remove(req,res){const x=await Staff.findByIdAndDelete(req.params.id);if(!x)throw new ApiError(404,'Staff member not found');res.json({success:true,message:'Staff member deleted'})}

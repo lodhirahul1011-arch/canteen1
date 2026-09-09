@@ -1,0 +1,1 @@
+import {Router} from 'express';import {list,create,update,remove} from '../controllers/foodController.js';import {protect,roles} from '../middleware/auth.js';const r=Router();r.get('/',protect,list);r.post('/',protect,roles('admin','staff'),create);r.put('/:id',protect,roles('admin','staff'),update);r.delete('/:id',protect,roles('admin'),remove);export default r;

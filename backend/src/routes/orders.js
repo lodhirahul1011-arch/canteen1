@@ -1,0 +1,1 @@
+import {Router} from 'express';import {list,create,updateStatus} from '../controllers/orderController.js';import {protect,roles} from '../middleware/auth.js';const r=Router();r.get('/',protect,list);r.post('/',protect,roles('admin','staff','member'),create);r.patch('/:id/status',protect,roles('admin','staff'),updateStatus);export default r;

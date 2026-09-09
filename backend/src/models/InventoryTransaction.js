@@ -1,0 +1,3 @@
+import mongoose from 'mongoose';
+const s=new mongoose.Schema({food:{type:mongoose.Schema.Types.ObjectId,ref:'Food',required:true},type:{type:String,enum:['PURCHASE','SALE','ADJUSTMENT','RETURN'],required:true},quantity:Number,unitPrice:Number,reference:String,note:String,createdBy:{type:mongoose.Schema.Types.ObjectId,ref:'User'}},{timestamps:true});
+export default mongoose.model('InventoryTransaction',s);

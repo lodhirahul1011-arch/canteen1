@@ -1,0 +1,1 @@
+import {Router} from 'express';import {summary,transactions} from '../controllers/inventoryController.js';import {protect,roles} from '../middleware/auth.js';const r=Router();r.get('/summary',protect,roles('admin','staff'),summary);r.get('/transactions',protect,roles('admin','staff'),transactions);export default r;

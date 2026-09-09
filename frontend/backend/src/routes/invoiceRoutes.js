@@ -1,0 +1,2 @@
+import {Router} from 'express';import {param} from 'express-validator';import {requireAuth} from '../middleware/auth.js';import {validate} from '../middleware/validation.js';import {asyncHandler} from '../utils/asyncHandler.js';import * as c from '../controllers/invoiceController.js';
+const r=Router();r.use(requireAuth);r.get('/',asyncHandler(c.list));r.get('/order/:orderId',[param('orderId').isMongoId(),validate],asyncHandler(c.byOrder));r.get('/:id',[param('id').isMongoId(),validate],asyncHandler(c.getOne));export default r;
